@@ -30,6 +30,15 @@ Asegúrate de que las dependencias anteriores están configuradas correctamente 
 
 2. Instala las dependencias:
    ```bash
+   npm install -g @nestjs/cli@10.4.9
+   npm install @nestjs/core@10.4.9
+   npm install @nestjs/common@10.4.9
+   npm install @nestjs/platform-express@10.4.9
+   npm install @nestjs/swagger@8.1.1
+   npm install @nestjs/jwt@11.0.0
+   npm install pg@8.13.1
+   npm install bcrypt@5.1.1
+
    npm install
    ```
 
