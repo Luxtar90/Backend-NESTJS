@@ -12,6 +12,7 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { EmployeesModule } from './modules/employees/employees.module';
 import { AppointmentsModule } from './modules/appointment/appointment.module';
+import { AvailabilityModule } from './modules/availability/availability.module'; // 🔹 Agregado
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AppointmentsModule } from './modules/appointment/appointment.module';
     ReservationsModule,
     EmployeesModule,
     AppointmentsModule,
+    AvailabilityModule, // 🔹 Se agregó el módulo de disponibilidad
   ],
   controllers: [],
   providers: [],
