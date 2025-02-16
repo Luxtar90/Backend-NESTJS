@@ -9,6 +9,7 @@ import { Client } from 'src/entities/client.entity';
 import { Employee } from 'src/entities/employee.entity';
 import { Reservation } from 'src/entities/reservation.entity';
 import { Appointment } from 'src/entities/appointment.entity';
+import { ClientStore } from 'src/entities/client-store.entity';
 
 export const typeOrmConfig = (
   configService: ConfigService,
@@ -29,9 +30,10 @@ export const typeOrmConfig = (
     Employee,
     Reservation,
     Appointment,
+    ClientStore,
   ],
-  synchronize: false, // Cambiar a true solo para desarrollo inicial
+  synchronize: false,
   ssl: {
-    rejectUnauthorized: false, // Necesario para Clever Cloud
+    rejectUnauthorized: false,
   },
 });

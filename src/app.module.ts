@@ -12,12 +12,13 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { EmployeesModule } from './modules/employees/employees.module';
 import { AppointmentsModule } from './modules/appointment/appointment.module';
-import { AvailabilityModule } from './modules/availability/availability.module'; // 🔹 Agregado
+import { AvailabilityModule } from './modules/availability/availability.module';
+import { ClientStoresModule } from './modules/client-stores/client-stores.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Configuración global para las variables de entorno
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -34,7 +35,8 @@ import { AvailabilityModule } from './modules/availability/availability.module';
     ReservationsModule,
     EmployeesModule,
     AppointmentsModule,
-    AvailabilityModule, // 🔹 Se agregó el módulo de disponibilidad
+    AvailabilityModule,
+    ClientStoresModule,
   ],
   controllers: [],
   providers: [],
