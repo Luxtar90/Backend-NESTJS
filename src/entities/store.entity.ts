@@ -3,14 +3,16 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany,
   DeleteDateColumn,
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { ClientStore } from './client-store.entity';
 
 @Entity('tiendas')
 export class Store {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
   @Column({ name: 'nombre', type: 'varchar', length: 100 })
@@ -33,9 +35,8 @@ export class Store {
   @Column({ name: 'codigo_unico', type: 'varchar', length: 50, unique: true })
   uniqueCode: string;
 
-  @ManyToOne(() => User, (user) => user.id) // Relación con el administrador
-  @JoinColumn({ name: 'id_admin' })
-  admin: User;
+  @Column({ name: 'imagen', nullable: true })
+  imagen: string;
 
   @Column({
     name: 'creado_en',
@@ -46,4 +47,11 @@ export class Store {
 
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   deletedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.id) // Relación con el administrador
+  @JoinColumn({ name: 'id_admin' })
+  admin: User;
+
+  @OneToMany(() => ClientStore, (clientStore) => clientStore.store, { cascade: true })
+  clientStores: ClientStore[];
 }

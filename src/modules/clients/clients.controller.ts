@@ -42,8 +42,8 @@ export class ClientsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
-    await this.clientsService.delete(id);
-    return { message: 'Cliente eliminado' };
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.clientsService.remove(id);
+    return { message: 'Client deleted successfully' };
   }
 }

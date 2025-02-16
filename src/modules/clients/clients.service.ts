@@ -4,62 +4,58 @@ import { Repository } from 'typeorm';
 import { Client } from '../../entities/client.entity';
 import { CreateClientDto } from './dtos/create-client.dto';
 import { UpdateClientDto } from './dtos/update-client.dto';
-import { User } from '../../entities/user.entity';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectRepository(Client)
-    private readonly clientRepository: Repository<Client>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private clientRepository: Repository<Client>,
   ) {}
 
   async findAll(): Promise<Client[]> {
-    return this.clientRepository.find({ relations: ['user'] });
+    return this.clientRepository.find({
+      relations: ['user', 'clientStores']
+    });
   }
 
   async findOne(id: number): Promise<Client> {
     const client = await this.clientRepository.findOne({
-      where: { id },
-      relations: ['user'],
+      where: { id_user: id },
+      relations: ['user', 'clientStores'],
     });
+
     if (!client) {
-      throw new NotFoundException('Cliente no encontrado');
+      throw new NotFoundException('Client not found');
     }
+
     return client;
   }
 
   async create(createClientDto: CreateClientDto): Promise<Client> {
-    const user = await this.userRepository.findOne({
-      where: { id: createClientDto.userId },
-    });
-    if (!user) {
-      throw new NotFoundException('Usuario asociado no encontrado');
-    }
+    const client = new Client();
+    client.id_user = createClientDto.id_user;
 
-    const client = this.clientRepository.create({ user });
-    return this.clientRepository.save(client);
+    try {
+      return await this.clientRepository.save(client);
+    } catch (error) {
+      throw new Error('Error creating client: ' + error.message);
+    }
   }
 
   async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
     const client = await this.findOne(id);
-
-    if (updateClientDto.userId) {
-      const user = await this.userRepository.findOne({
-        where: { id: updateClientDto.userId },
-      });
-      if (!user) {
-        throw new NotFoundException('Usuario asociado no encontrado');
-      }
-      client.user = user;
+    
+    Object.assign(client, updateClientDto);
+    
+    try {
+      return await this.clientRepository.save(client);
+    } catch (error) {
+      throw new Error('Error updating client: ' + error.message);
     }
-
-    return this.clientRepository.save(client);
   }
 
-  async delete(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {
     const client = await this.findOne(id);
-    await this.clientRepository.delete(client.id);
+    await this.clientRepository.delete(client.id_user);
   }
 }

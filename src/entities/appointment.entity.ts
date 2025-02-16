@@ -15,7 +15,7 @@ export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client, (client) => client.id, { eager: true })
+  @ManyToOne(() => Client, (client) => client.id_user, { eager: true })
   @JoinColumn({ name: 'id_cliente' })
   client: Client;
 

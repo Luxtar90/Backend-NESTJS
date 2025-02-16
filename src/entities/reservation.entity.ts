@@ -15,7 +15,7 @@ export class Reservation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Client, (client) => client.id)
+  @ManyToOne(() => Client, (client) => client.id_user)
   @JoinColumn({ name: 'id_cliente' })
   client: Client;
 

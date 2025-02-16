@@ -43,7 +43,7 @@ export class ReservationsService {
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
     const client = await this.clientRepository.findOne({
-      where: { id: createReservationDto.clientId },
+      where: { id_user: createReservationDto.clientId },
     });
     if (!client) {
       throw new NotFoundException('Cliente no encontrado');
