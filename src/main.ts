@@ -5,32 +5,40 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Habilitar CORS para permitir solicitudes desde cualquier origen (ajustar en producción)
+  // Habilitar CORS para permitir solicitudes desde cualquier origen
   app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
+    origin: true, // Permite cualquier origen
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
+
+  // Configurar el prefijo global /api para todas las rutas
+  app.setGlobalPrefix('api');
 
   // Configuración de Swagger para documentación de la API
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('API for the mobile application')
     .setVersion('1.0')
-    .addTag('Authentication') // Etiqueta para autenticación
-    .addTag('Disponibilidad') // Agrega el módulo de Disponibilidad
-    .addTag('Usuarios') // Puedes añadir más módulos si es necesario
-    .addBearerAuth() // Para manejar autenticación con tokens JWT
+    .addTag('Authentication')
+    .addTag('Disponibilidad')
+    .addTag('Usuarios')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, {
-    swaggerOptions: { persistAuthorization: true }, // Mantiene el token en Swagger
+  SwaggerModule.setup('api-docs', app, document, {
+    swaggerOptions: { persistAuthorization: true },
   });
 
-  console.log(`🚀 API corriendo en: http://localhost:3000/api`); // Mensaje para verificar en consola
-
+  // Escuchar en todas las interfaces
   await app.listen(3000, '0.0.0.0');
+  const serverUrl = await app.getUrl();
+  console.log(`🚀 API corriendo en: ${serverUrl}/api`);
+  console.log(`📚 Documentación disponible en: ${serverUrl}/api-docs`);
 }
 
 bootstrap();
