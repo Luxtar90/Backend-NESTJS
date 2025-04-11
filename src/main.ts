@@ -37,7 +37,6 @@ async function bootstrap() {
   // Escuchar en todas las interfaces
   await app.listen(3000, '0.0.0.0');
   const serverUrl = await app.getUrl();
-  console.log(`🚀 API corriendo en: ${serverUrl}/api`);
   console.log(`📚 Documentación disponible en: ${serverUrl}/api-docs`);
 }
 
